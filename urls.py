@@ -5,6 +5,7 @@ from django.conf.urls.defaults import patterns, include, url
 # admin.autodiscover()
 
 from django.views.generic import ListView, DetailView
+from authorprofile import views
 from authorprofile.models import Person
 
 urlpatterns = patterns('',
@@ -18,6 +19,9 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^$', ListView.as_view(queryset=Person.objects.raw_query({'ids': {'$size': 1}}), context_object_name='acisAuthorList'), name='acisAuthorList'),
-    url(r'^$', DetailView.as_view(queryset=Person.objects.raw_query({'ids': {'$size': 0}}), context_object_name='acisAuthorDetail'), name='acisAuthorDetail'),
+    # Retrieve all identified authors
+    url(r'^$', ListView.as_view(queryset=Person.objects.raw_query({'ids': {'$not': {'$size': 0}}}), context_object_name='acisAuthorList'), name='acisAuthorList'),
+
+    # For retrieving individual authors
+    url(r'^author/(?P<name>[a-zA-Z0-9- ]+)$', views.authorDetail, name='authorDetail')
 )
