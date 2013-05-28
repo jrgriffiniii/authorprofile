@@ -20,7 +20,7 @@ urlpatterns = patterns('',
     # url(r'^admin/', include(admin.site.urls)),
 
     # Retrieve all identified authors
-    url(r'^$', ListView.as_view(queryset=Person.objects.raw_query({'ids': {'$not': {'$size': 0}}}), context_object_name='acisAuthorList'), name='acisAuthorList'),
+    url(r'^author/?$', ListView.as_view(queryset=Person.objects.raw_query({'ids': {'$not': {'$size': 0}}}), context_object_name='acisAuthorList'), name='acisAuthorList'),
 
     # For retrieving individual authors
     url(r'^author/(?P<name>[a-zA-Z0-9- ]+)$', views.authorDetail, name='authorDetail')
