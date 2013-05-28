@@ -1,0 +1,17 @@
+{% load person %}
+<h1>{{ author.name }}</h1>
+<h2>Deepest Network Path Discovered</h2>
+{% if author.deepestPaths|length > 0 %}
+<ol>
+{% for edge in author.deepestPaths|deepestPath %}
+<li>{{ edge.personName }}</li>
+{% endfor %}
+</ol>
+{% endif %}
+{% if author.texts|length > 0 %}
+<h2>Cited in Texts</h2>
+{% for textId in author.texts %}
+<h3>{{ textId }}</h3>
+{% endfor %}
+{% endif %}
+</ul>
