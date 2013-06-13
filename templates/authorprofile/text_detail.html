@@ -1,0 +1,9 @@
+{% load person %}
+<h1>{{ text.textId }}</h1>
+{% if text.authors|length > 0 %}
+<ul>
+{% for author in text.authors %}
+<li>{{author|authorName}}</li>
+{% endfor %}
+</ul>
+{% endif %}

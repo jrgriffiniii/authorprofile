@@ -6,7 +6,7 @@ from django.conf.urls.defaults import patterns, include, url
 
 from django.views.generic import ListView, DetailView
 from authorprofile import views
-from authorprofile.models import Person
+from authorprofile.models import Person, Text
 
 urlpatterns = patterns('',
     # Examples:
@@ -23,5 +23,11 @@ urlpatterns = patterns('',
     url(r'^author/?$', ListView.as_view(queryset=Person.objects.raw_query({'ids': {'$not': {'$size': 0}}}), context_object_name='acisAuthorList'), name='acisAuthorList'),
 
     # For retrieving individual authors
-    url(r'^author/(?P<name>[a-zA-Z0-9- ]+)$', views.authorDetail, name='authorDetail')
+    url(r'^author/(?P<authorName>[a-zA-Z0-9\-\. ]+)$', views.authorDetail, name='authorDetail'),
+
+    # For retrieving authors by related texts
+    url(r'^author/text/(?P<textId>[a-zA-Z0-9\/:\.\-_]+)$', views.textList, name='authorListByText'),
+
+    # For retrieving texts (AJAX)
+    url(r'^text/(?P<textId>[a-zA-Z0-9\/:\.\-_]+)$', views.textDetail, name='textDetail')
 )

@@ -1,0 +1,5 @@
+<h1>Authors Cited within {{ textId }}</h1>
+{% for author in authorList %}
+  <h2>{{ author.name }}</h2>
+  <span><a href="/author/{{author.name }}">{{ author.name }}</a></span>
+{% endfor %}

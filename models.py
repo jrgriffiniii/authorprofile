@@ -8,7 +8,7 @@ class Person(models.Model):
     objects = MongoDBManager()
 
     name = models.CharField(max_length=255)
-    texts = ListField()
+    texts = ListField(EmbeddedModelField('Text'))
     ids = ListField(EmbeddedModelField('Id'))
     nameVariants = ListField()
     deepestPaths = ListField(EmbeddedModelField('Path'))
@@ -26,3 +26,14 @@ class Id(models.Model):
 
     namespace = models.CharField(max_length=255)
     value = models.CharField(max_length=255)
+
+class Text(models.Model):
+
+    objects = MongoDBManager()
+
+    textId = models.CharField(max_length=255)
+    authors = ListField(EmbeddedModelField('Person'))
+
+    class MongoMeta:
+
+        indexes = [ [('textId', 1)] ]

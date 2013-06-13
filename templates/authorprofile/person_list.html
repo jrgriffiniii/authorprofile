@@ -1,4 +1,5 @@
 <h1>Identified Authors</h1>
 {% for acisAuthor in acisAuthorList %}
-  <h2>{{ acisAuthor.name }}</a></h2>
+  <h2>{{ acisAuthor.name }}</h2>
+  <span><a href="/author/{{acisAuthor.name }}">{{ acisAuthor.name }}</a></span>
 {% endfor %}

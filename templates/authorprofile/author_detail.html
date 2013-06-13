@@ -10,8 +10,8 @@
 {% endif %}
 {% if author.texts|length > 0 %}
 <h2>Cited in Texts</h2>
-{% for textId in author.texts %}
-<h3>{{ textId }}</h3>
+{% for text in author.texts %}
+<h3><a href="/author/text/{{ text.textId }}">{{ text.textId }}</a></h3>
 {% endfor %}
 {% endif %}
 </ul>
