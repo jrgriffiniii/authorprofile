@@ -3,6 +3,9 @@ from django.http import Http404
 
 from models import Person, Text
 
+from django.views.decorators.csrf import csrf_protect
+
+@csrf_protect
 def authorDetail(request, authorName):
 
     # Retrieve all unidentified authors
@@ -21,19 +24,16 @@ def authorDetail(request, authorName):
             controlledAuthor = controlledAuthor[0]
             context = {'author': controlledAuthor}
         
-            if not controlledAuthor:
+        else:
 
-                raise Http404
+            raise Http404
 
     return render(request, 'authorprofile/author_detail.html', context)
 
 def textList(request, textId):
+    '''Retrieve all Persons related to a specified text'''
 
-    # ListView.as_view(queryset=Person.objects.raw_query({'texts': {'$in': []}}), context_object_name='authorListByText')
-
-    # Retrieve all unidentified authors
     # Specific to the MongoDB
-
     authorList = Person.objects.raw_query({'texts': {'$in': [{'textId': textId}]}})
     if authorList:
 
@@ -45,6 +45,7 @@ def textList(request, textId):
     return render(request, 'authorprofile/text_list.html', context)
 
 def textDetail(request, textId):
+    '''Retrieve a single text'''
 
     # Indexing support? (http://django-mongodb-engine.readthedocs.org/en/latest/reference/model-options.html#indexes)
     #text = Text.objects.get(textId=textId)

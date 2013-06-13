@@ -1,4 +1,7 @@
+{% extends "base.html" %}
+{% load dajaxice_templatetags %}
 {% load person %}
+{% block content %}
 <h1>{{ author.name }}</h1>
 <h2>Deepest Network Path Discovered</h2>
 {% if author.deepestPaths|length > 0 %}
@@ -9,9 +12,15 @@
 </ol>
 {% endif %}
 {% if author.texts|length > 0 %}
-<h2>Cited in Texts</h2>
-{% for text in author.texts %}
-<h3><a href="/author/text/{{ text.textId }}">{{ text.textId }}</a></h3>
+{% for textSet in author.texts %}
+<h2>{{ textSet.label }}</h2>
+{% for text in textSet.texts %}
+<div class="text-container" id="{{text.textId}}">Loading...</div>
+{% endfor %}
 {% endfor %}
 {% endif %}
 </ul>
+{% dajaxice_js_import %}
+<script type="application/javascript" src="/static/dajax/jquery.dajax.core.js"></script>
+<script type="application/javascript" src="/static/js/author.js"></script>
+{% endblock %}

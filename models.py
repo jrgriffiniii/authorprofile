@@ -8,10 +8,11 @@ class Person(models.Model):
     objects = MongoDBManager()
 
     name = models.CharField(max_length=255)
-    texts = ListField(EmbeddedModelField('Text'))
+    texts = ListField(EmbeddedModelField('TextSet'))
     ids = ListField(EmbeddedModelField('Id'))
     nameVariants = ListField()
     deepestPaths = ListField(EmbeddedModelField('Path'))
+
 
 class Path(models.Model):
 
@@ -37,3 +38,9 @@ class Text(models.Model):
     class MongoMeta:
 
         indexes = [ [('textId', 1)] ]
+
+class TextSet(models.Model):
+
+    label = models.CharField(max_length=255)
+    value = models.FloatField()
+    texts = ListField(EmbeddedModelField('Text'))

@@ -1,5 +1,7 @@
+{% extends "base.html" %}
 {% load person %}
-<h1>{{ text.textId }}</h1>
+{% block content %}
+<h3><a href="/author/text/{{ text.textId }}">{{ text.textId }}</a></h3>
 {% if text.authors|length > 0 %}
 <ul>
 {% for author in text.authors %}
@@ -7,3 +9,4 @@
 {% endfor %}
 </ul>
 {% endif %}
+{% endblock %}

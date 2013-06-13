@@ -4,6 +4,10 @@ from django.conf.urls.defaults import patterns, include, url
 # from django.contrib import admin
 # admin.autodiscover()
 
+from dajaxice.core import dajaxice_autodiscover, dajaxice_config
+dajaxice_autodiscover()
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
 from django.views.generic import ListView, DetailView
 from authorprofile import views
 from authorprofile.models import Person, Text
@@ -19,8 +23,11 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
 
+    # dajax (http://django-dajaxice.readthedocs.org/en/latest/installation.html)
+    url(dajaxice_config.dajaxice_url, include('dajaxice.urls')),
+
     # Retrieve all identified authors
-    url(r'^author/?$', ListView.as_view(queryset=Person.objects.raw_query({'ids': {'$not': {'$size': 0}}}), context_object_name='acisAuthorList'), name='acisAuthorList'),
+    url(r'^authors/?$', ListView.as_view(queryset=Person.objects.raw_query({'ids': {'$not': {'$size': 0}}}), context_object_name='acisAuthorList'), name='acisAuthorList'),
 
     # For retrieving individual authors
     url(r'^author/(?P<authorName>[a-zA-Z0-9\-\. ]+)$', views.authorDetail, name='authorDetail'),
@@ -31,3 +38,5 @@ urlpatterns = patterns('',
     # For retrieving texts (AJAX)
     url(r'^text/(?P<textId>[a-zA-Z0-9\/:\.\-_]+)$', views.textDetail, name='textDetail')
 )
+
+urlpatterns += staticfiles_urlpatterns()
