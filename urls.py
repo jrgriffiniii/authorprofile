@@ -27,9 +27,13 @@ urlpatterns = patterns('',
     url(dajaxice_config.dajaxice_url, include('dajaxice.urls')),
 
     # Retrieve all identified authors
-    url(r'^authors/?$', ListView.as_view(queryset=Person.objects.raw_query({'ids': {'$not': {'$size': 0}}}), context_object_name='acisAuthorList'), name='acisAuthorList'),
+    #url(r'^authors/?$', ListView.as_view(queryset=Person.objects.raw_query({'ids': {'$not': {'$size': 0}}}, {'name': True}), context_object_name='acisAuthorList'), name='acisAuthorList'),
+    url(r'^author/?$', views.authorList, name='acisAuthorList'),
 
-    # For retrieving individual authors
+    # For retrieving identified authors by their ACIS ID
+    url(r'^author/(?P<personId>p[a-zA-Z]+[0-9]+)$', views.personDetail, name='personDetail'),
+
+    # For retrieving individual, unidentified authors by their name
     url(r'^author/(?P<authorName>[a-zA-Z0-9\-\. ]+)$', views.authorDetail, name='authorDetail'),
 
     # For retrieving authors by related texts

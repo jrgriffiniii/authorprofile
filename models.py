@@ -3,6 +3,11 @@ from django.db import models
 from djangotoolbox.fields import ListField, EmbeddedModelField
 from django_mongodb_engine.contrib import MongoDBManager
 
+class Id(models.Model):
+
+    namespace = models.CharField(max_length=255)
+    value = models.CharField(max_length=255)
+
 class Person(models.Model):
 
     objects = MongoDBManager()
@@ -23,10 +28,7 @@ class Edge(models.Model):
     personName = models.CharField(max_length=255)
     weight = models.FloatField()
 
-class Id(models.Model):
 
-    namespace = models.CharField(max_length=255)
-    value = models.CharField(max_length=255)
 
 class Text(models.Model):
 

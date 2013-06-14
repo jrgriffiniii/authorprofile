@@ -1,5 +1,10 @@
+{% extends "base.html" %}
+{% load person %}
+{% block content %}
 <h1>Identified Authors</h1>
-{% for acisAuthor in acisAuthorList %}
-  <h2>{{ acisAuthor.name }}</h2>
-  <span><a href="/author/{{acisAuthor.name }}">{{ acisAuthor.name }}</a></span>
+<ul>
+{% for person in authorList %}
+<li><a href="/author/{{person.name}}">{{person|authorName}}</a></li>
 {% endfor %}
+</ul>
+{% endblock %}
