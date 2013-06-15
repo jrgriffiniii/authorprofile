@@ -3,8 +3,8 @@
 {% block content %}
 <h1>Identified Authors</h1>
 <ul>
-{% for person in authorList %}
-<li><a href="/author/{{person.name}}">{{person|authorName}}</a></li>
+{% for person in personList %}
+<li><a href="/author/{{ person|authorName }}">{{ person.name }}</a></li>
 {% endfor %}
 </ul>
 {% endblock %}

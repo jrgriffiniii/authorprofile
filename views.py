@@ -10,24 +10,6 @@ from django.db import connections
 database_wrapper = connections['default']
 person = database_wrapper.get_collection('authorprofile_person')
 
-def authorList(request):
-
-    # Specific to the MongoDB
-    # This breaks PyMongo for performance reasons
-    # authorList = Person.objects.raw_query({'texts': {'$in': [{'textId': textId}]}})
-    # authorList = person.find({'ids': {'$not': {'$size': 0}}}, {'name': True})
-    authorList = person.find({'ids': {'$not': {'$size': 0}}}, {'texts': False})
-
-    if authorList:
-
-        # Because these are PyMongo results, please note that these are NOT Model Objects!
-        context = {'authorList': authorList}
-
-    else:
-        raise Http404
-
-    return render(request, 'authorprofile/person_list.html', context)
-
 @csrf_protect
 def personDetail(request, personId):
     '''For the consideration of this system, all Persons are potentially, but not necessarily, Authors'''
@@ -85,19 +67,17 @@ def authorDetail(request, authorName):
     if author:
 
         author = author[0]
+
+        # As stated above, this is only undertaken in order to avoid breaking PyMongo
+        if texts:
+
+            author.texts = [TextSet(texts=texts, value=1, label='Texts Accepted by ' + author.name)]
+
         context = {'author': author}
 
     else:
 
-        controlledAuthor = Person.objects.raw_query({'name': authorName})
-        if controlledAuthor:
-
-            controlledAuthor = controlledAuthor[0]
-            context = {'author': controlledAuthor}
-        
-        else:
-
-            raise Http404
+        raise Http404
 
     return render(request, 'authorprofile/author_detail.html', context)
 
