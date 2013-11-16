@@ -20,7 +20,7 @@ DATABASES = {
 #    }
     'default': {
         'ENGINE' : 'django_mongodb_engine',
-        'NAME' : 'authorprofile'
+        'NAME' : 'authorprofile',
     }
 }
 
