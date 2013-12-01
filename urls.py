@@ -11,8 +11,9 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.generic import ListView, DetailView
 from authorprofile import views
 from authorprofile.models import Person, Text
+from django.utils import encoding
 
-urlpatterns = patterns('',
+urlpatterns = patterns('authorprofile.views',
     # Examples:
     # url(r'^$', 'authorprofile.views.home', name='home'),
     # url(r'^authorprofile/', include('authorprofile.foo.urls')),
@@ -27,20 +28,21 @@ urlpatterns = patterns('',
     url(dajaxice_config.dajaxice_url, include('dajaxice.urls')),
 
     # Retrieve all identified authors
-    url(r'^author/?$', ListView.as_view(queryset=Person.objects.raw_query({'ids': {'$not': {'$size': 0}}}), context_object_name='personList'), name='personList'),
-    #url(r'^author/?$', views.authorList, name='acisAuthorList'),
+    # Ensure that we are retrieving authors who have claimed texts from within AuthorClaim
+    url(r'^author/?$', ListView.as_view(queryset=Person.objects.raw_query({'ids': {'$not': {'$size': 0}}}), context_object_name='personList', paginate_by=40), name='personList'),
+    # url(r'^author/?$', views.personList, paginate_by=40, name='personList'),
 
     # For retrieving identified authors by their ACIS ID
-    url(r'^author/(?P<personId>p[a-zA-Z]+[0-9]+)$', views.personDetail, name='personDetail'),
+    url(r'^author/(?P<personId>p\w+\d+)$', views.personDetail, name='personDetail'),
 
     # For retrieving individual, unidentified authors by their name
-    url(r'^author/(?P<authorName>[a-zA-Z0-9\-\. ]+)$', views.authorDetail, name='authorDetail'),
+    url(r'^author/(?P<authorName>[\w\-\.,\s]+)$', views.authorDetail, name='authorDetail'),
 
     # For retrieving authors by related texts
-    url(r'^author/text/(?P<textId>[a-zA-Z0-9\/:\.\-_]+)$', views.textList, name='authorListByText'),
+    url(r'^author/text/(?P<textId>[\w\d\/\:\.\-_]+)$', views.textList, name='authorListByText'),
 
     # For retrieving texts (AJAX)
-    url(r'^text/(?P<textId>[a-zA-Z0-9\/:\.\-_]+)$', views.textDetail, name='textDetail')
+    url(r'^text/(?P<textId>[\w\d\/\:\.\-_]+)$', views.textDetail, name='textDetail')
 )
 
 urlpatterns += staticfiles_urlpatterns()

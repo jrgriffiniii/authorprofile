@@ -4,7 +4,11 @@
 <h1>Identified Authors</h1>
 <ul>
 {% for person in personList %}
+{% if person.texts|length > 0 %}
 <li><a href="/author/{{ person|authorName }}">{{ person.name }}</a></li>
+{% else %}
+<li>{{ person.name }}</li>
+{% endif %}
 {% endfor %}
 </ul>
 {% endblock %}

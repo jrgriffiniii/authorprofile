@@ -17,7 +17,11 @@ class Person(models.Model):
     ids = ListField(EmbeddedModelField('Id'))
     nameVariants = ListField()
     deepestPaths = ListField(EmbeddedModelField('Path'))
+    # deepestPaths = ListField(DictField())
 
+    class MongoMeta:
+
+        indexes = [ [('name', 1)] ]
 
 class Path(models.Model):
 
@@ -26,9 +30,8 @@ class Path(models.Model):
 class Edge(models.Model):
 
     personName = models.CharField(max_length=255)
+    endPersonName = models.CharField(max_length=255)
     weight = models.FloatField()
-
-
 
 class Text(models.Model):
 

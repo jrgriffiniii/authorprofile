@@ -1,13 +1,15 @@
 {% extends "base.html" %}
 {% load dajaxice_templatetags %}
 {% load person %}
+{% load url from future %}
 {% block content %}
 <h1>{{ author.name }}</h1>
-<h2>Deepest Network Path Discovered</h2>
 {% if author.deepestPaths|length > 0 %}
+<h2>Deepest Network Path Discovered</h2>
 <ol>
 {% for edge in author.deepestPaths|deepestPath %}
-<li>{{ edge.personName }}</li>
+{# 'url' Filter is not finding my View when reverse() is... #}
+<li><a href="{{ edge.personName }}">{{ edge.personName }}</a></li>
 {% endfor %}
 </ol>
 {% endif %}

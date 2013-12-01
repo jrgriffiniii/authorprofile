@@ -10,6 +10,14 @@ from django.db import connections
 database_wrapper = connections['default']
 person = database_wrapper.get_collection('authorprofile_person')
 
+def personList(request):
+
+    queryset = Person.objects.raw_query({'ids': {'$not': {'$size': 0}}})
+
+    context = { 'persons': queryset }
+
+    return render(request, 'authorprofile/person_list.html', context)
+
 @csrf_protect
 def personDetail(request, personId):
     '''For the consideration of this system, all Persons are potentially, but not necessarily, Authors'''
@@ -31,11 +39,12 @@ def personDetail(request, personId):
     if author:
 
         author = author[0]
+        #texts = author.texts[0]
 
         # As stated above, this is only undertaken in order to avoid breaking PyMongo
-        if texts:
+        #if texts:
 
-            author.texts = [TextSet(texts=texts, value=1, label='Texts Accepted by ' + author.name)]
+        #    author.texts = [TextSet(texts=texts, value=1, label='Texts Accepted by ' + author.name)]
 
         context = {'author': author}
     else:
@@ -73,7 +82,7 @@ def authorDetail(request, authorName):
 
             author.texts = [TextSet(texts=texts, value=1, label='Texts Accepted by ' + author.name)]
 
-        context = {'author': author}
+        context = {'author': author }
 
     else:
 
